@@ -1,4 +1,5 @@
 // src/app/page.js
+export const dynamic = "force-dynamic";
 import Link from 'next/link';
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 
