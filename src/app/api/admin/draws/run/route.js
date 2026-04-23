@@ -1,7 +1,7 @@
 // src/app/api/admin/draws/run/route.js
 import { createServerSupabaseClient, createAdminClient } from '@/lib/supabase';
 import { generateDrawNumbers, matchScores } from '@/lib/draw';
-import { calculatePrizePools, POOL_CONTRIBUTION } from "@/lib/razorpay";
+import { calculatePrizePools, POOL_CONTRIBUTION } from "@/lib/utils";
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {

@@ -2,7 +2,7 @@
 // src/components/admin/AdminDraw.js
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { calculatePrizePools } from "@/lib/razorpay";
+import { calculatePrizePools } from "@/lib/utils";
 
 export default function AdminDraw({ draws, subscriberCount }) {
   const router = useRouter();
