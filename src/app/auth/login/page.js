@@ -12,20 +12,33 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    const { error } = await supabase.auth.signInWithPassword(form);
-    if (error) { setError(error.message); setLoading(false); return; }
+async function handleSubmit(e) {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    // Check role for redirect
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .single();
-    router.push(profile?.role === 'admin' ? '/admin' : '/dashboard');
+  const { data: authData, error } =
+    await supabase.auth.signInWithPassword(form);
+  if (error) {
+    setError(error.message);
+    setLoading(false);
+    return;
   }
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", authData.user.id)
+    .single();
+
+  console.log("profile:", profile, "error:", profileError);
+
+  if (profile?.role === "admin") {
+    router.push("/admin");
+  } else {
+    router.push("/dashboard");
+  }
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
