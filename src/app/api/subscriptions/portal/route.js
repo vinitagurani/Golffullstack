@@ -1,5 +1,4 @@
-// src/app/api/subscriptions/portal/route.js
-import { razorpay } from "@/lib/razorpay";
+import { getRazorpay } from "@/lib/razorpay";
 import { createServerSupabaseClient } from "@/lib/supabase-server";
 import { createAdminClient } from "@/lib/supabase";
 import { NextResponse } from "next/server";
@@ -17,10 +16,12 @@ export async function POST() {
     .select("subscription_id")
     .eq("id", user.id)
     .single();
+
   if (!profile?.subscription_id)
     return NextResponse.json({ error: "No subscription" }, { status: 400 });
 
   try {
+    const razorpay = getRazorpay();
     await razorpay.subscriptions.cancel(profile.subscription_id, {
       cancel_at_cycle_end: 1,
     });

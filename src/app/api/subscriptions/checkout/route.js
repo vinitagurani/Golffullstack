@@ -1,5 +1,4 @@
-// src/app/api/subscriptions/checkout/route.js
-import { razorpay, PLANS } from "@/lib/razorpay";
+import { getRazorpay, PLANS } from "@/lib/razorpay";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -10,10 +9,11 @@ export async function POST(req) {
     return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
 
   try {
+    const razorpay = getRazorpay();
     const subscription = await razorpay.subscriptions.create({
       plan_id: planId,
       customer_notify: 1,
-      total_count: plan === "yearly" ? 12 : 120, // billing cycles
+      total_count: plan === "yearly" ? 12 : 120,
       notes: { userId, plan, email },
     });
 

@@ -1,12 +1,16 @@
-"use server";
-import Razorpay from "razorpay";
+// src/lib/razorpay.js
 import crypto from "crypto";
+
 export { POOL_CONTRIBUTION, calculatePrizePools } from "@/lib/utils";
 
-export const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// Lazy init — only runs on server when actually called
+export function getRazorpay() {
+  const Razorpay = require("razorpay");
+  return new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+}
 
 export function verifyWebhookSignature(body, signature, secret) {
   const expected = crypto
